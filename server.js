@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { response } from 'express';
 import { Pool } from 'pg';
 import cors from 'cors';
 
@@ -18,8 +18,10 @@ const pool = new Pool({
 });
 
 // Ruta de prueba
-app.get('/', (req, res) => {
-  res.send('¡Hola desde el backend de cschat!');
+app.get('/', async (req, res) => {
+    fetch('https://backend-server-2efm.onrender.com/api/cschat')
+      .then(response => response.json())
+      .then(data => res.send(data))
 });
 
 // Ruta para obtener todos los mensajes
@@ -46,6 +48,7 @@ app.post('/api/cschat', async (req, res) => {
     res.status(500).send('Error del servidor');
   }
 });
+
 
 // Iniciar el servidor
 app.listen(port, () => {
