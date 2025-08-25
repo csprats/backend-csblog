@@ -29,13 +29,13 @@ async function seedDatabase() {
     // Paso 2: Leer el archivo JSON con los datos
     const jsonData = fs.readFileSync(jsonPath, 'utf8');
     const data = JSON.parse(jsonData);
-    const messages = data.cschat;
+    const messages = data.csblog;
 
     // Paso 3: Insertar los datos en la tabla
     for (const msg of messages) {
       await pool.query(
         'INSERT INTO cschat (user_name, message) VALUES ($1, $2) ON CONFLICT DO NOTHING',
-        [msg.user, msg.message]
+        [msg.user, msg.content]
       );
     }
     console.log('¡Datos iniciales insertados correctamente!');
