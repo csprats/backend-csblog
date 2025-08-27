@@ -34,7 +34,7 @@ app.get('/api/cschat', async (req, res) => {
     res.status(500).send('Error del servidor');
   }
 });
-/* Ruta para añadir un nuevo mensaje
+// Ruta para añadir un nuevo mensaje
 app.post('/api/cschat', async (req, res) => {
   const { user, message } = req.body;
   try {
@@ -47,7 +47,7 @@ app.post('/api/cschat', async (req, res) => {
     console.error(err);
     res.status(500).send('Error del servidor');
   }
-});*/
+});/*
 
 app.post('/api/cschat', async (req, res) => {
   const { user, message } = req.body;
@@ -73,7 +73,7 @@ app.post('/api/cschat', async (req, res) => {
     console.error(err);
     res.status(500).send('Error del servidor');
   }
-});
+});*/
 
 
 // Iniciar el servidor
