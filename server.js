@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express, { response } from 'express';
 import { Pool } from 'pg';
 import cors from 'cors';
+import sanitizeHtml from 'sanitize-html';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -33,13 +34,39 @@ app.get('/api/cschat', async (req, res) => {
     res.status(500).send('Error del servidor');
   }
 });
-// Ruta para añadir un nuevo mensaje
+/* Ruta para añadir un nuevo mensaje
 app.post('/api/cschat', async (req, res) => {
   const { user, message } = req.body;
   try {
     const result = await pool.query(
       'INSERT INTO cschat (user_name, message) VALUES ($1, $2) RETURNING *',
       [user, message]
+    );
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error del servidor');
+  }
+});*/
+
+app.post('/api/cschat', async (req, res) => {
+  const { user, message } = req.body;
+
+  // Sanear el mensaje para prevenir ataques de inyección de HTML y XSS
+  const sanitizedMessage = sanitizeHtml(message, {
+    allowedTags: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li'],
+    allowedAttributes: {
+      'a': ['href']
+    },
+    // Si tu chat tiene un sistema de menciones o emoticonos,
+    // puedes permitir etiquetas específicas para eso.
+    // Por ejemplo: allowedTags: ['span']
+  });
+
+  try {
+    const result = await pool.query(
+      'INSERT INTO cschat (user_name, message) VALUES ($1, $2) RETURNING *',
+      [user, sanitizedMessage] // Usar el mensaje saneado
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
