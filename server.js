@@ -62,34 +62,7 @@ app.post('/api/cschat', async (req, res) => {
     console.error(err);
     res.status(500).send('Error del servidor');
   }
-});/*
-
-app.post('/api/cschat', async (req, res) => {
-  const { user, message } = req.body;
-
-  // Sanear el mensaje para prevenir ataques de inyección de HTML y XSS
-  const sanitizedMessage = sanitizeHtml(message, {
-    allowedTags: ['p', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li'],
-    allowedAttributes: {
-      'a': ['href']
-    },
-    // Si tu chat tiene un sistema de menciones o emoticonos,
-    // puedes permitir etiquetas específicas para eso.
-    // Por ejemplo: allowedTags: ['span']
-  });
-
-  try {
-    const result = await pool.query(
-      'INSERT INTO cschat (user_name, message) VALUES ($1, $2) RETURNING *',
-      [user, sanitizedMessage] // Usar el mensaje saneado
-    );
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send('Error del servidor');
-  }
-});*/
-
+});
 
 // Iniciar el servidor
 app.listen(port, () => {
